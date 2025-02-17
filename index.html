@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Cross-Scene Render-Supervised Distillation for 3D Language Grounding">
+  <meta name="keywords" content="LIFT-GS, 3D Language Grounding">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LIFT-GS: Cross-Scene Render-Supervised Distillation for 3D Language Grounding</title>
+
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KMHC9XQ4');</script>
+    <!-- End Google Tag Manager -->
+    
+  <!-- Global site tag (gtag.js) - Google Analytics
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script> -->
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KMHC9XQ4"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">LIFT-GS:</h1>
+          <h1 class="title is-1 publication-title">Cross-Scene Render-Supervised Distillation for 3D Language Grounding</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://caoang327.github.io/">Ang Cao</a><sup>1, 2</sup>,</span>
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/sergio-arnaud-226456198/">Sergio Arnaud</a><sup>2</sup>,</span>
+            <span class="author-block">
+              <a href="https://www.maksymets.com/">Oleksandr Maksymets</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://jedyang.com/">Jianing Yang</a><sup>1,2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://ayushjain1144.github.io/">Ayush Jain</a><sup>2,3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/ada-martin-cmu/">Ada Martin</a><sup>1,2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/vincentpierreberges/">Vincent-Pierre Berges</a><sup>2</sup>
+            </span>
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/paul-mcvay-277564204/">Paul McVay</a><sup>2</sup>
+            </span>
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/paul-mcvay-277564204/">Ruslan Partsey</a><sup>2</sup>
+            </span>
+            <span class="author-block">
+              <a href="https://aravindr93.github.io/">Aravind Rajeswaran</a><sup>2</sup>
+            </span>
+            <span class="author-block">
+              <a href="https://fmeier.github.io/">Franziska Meier</a><sup>2</sup>
+            </span>
+            <span class="author-block">
+              <a href="https://web.eecs.umich.edu/~justincj/">Justin Johnson</a><sup>2</sup>
+            </span>
+            <span class="author-block">
+              <a href="https://jeongjoonpark.github.io/">Jeong Joon Park</a><sup>2</sup>
+            </span>
+            <span class="author-block">
+              <a href="https://alexsax.github.io/">Alexander Sax</a><sup>2</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>University of Michigan,</span>
+            <span class="author-block"><sup>2</sup>Fundamental AI Research (FAIR), Meta</span>
+            <span class="author-block"><sup>3</sup>Carnegie Mellon University</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code(coming soon)</span>
+                  </a>
+              </span>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="columns is-centered">
+
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Overview</h2>
+        <div class="content has-text-justified">
+          <p style="background-color: #c2d1ee; color: rgb(0, 0, 0); padding: 10px;">
+            <strong>TL;DR</strong>: We train 3D vision-language grounding (3D VLG) models that is supervised only in 2D, using 2D losses and differentiable rendering.
+          </p>
+          <p>
+            Our approach to training 3D vision-language understanding models is to train a feedforward model that makes predictions in 3D, but never requires 3D labels and is supervised only in 2D, using 2D losses and differentiable rendering.
+            The approach is new for vision-language understanding. By treating the reconstruction as a ``latent variable'', we can render the outputs without placing unnecessary constraints on the network architecture (e.g. can be used with decoder-only models).
+            For training, only need images and camera pose, and 2D labels. We show that we can even remove the need for 2D labels by using pseudo-labels from pretrained 2D models. We demonstrate this to pretrain a network, and we finetune it for 3D vision-language understanding tasks. We show this approach outperforms baselines/sota for 3D vision-language grounding, and also outperforms other 3D pretraining techniques.
+      
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+</section>
+<section class="section" id="3Drefexp">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class=""column">
+      <div class="column content">
+        <img src="static/resource/teaser.gif" alt="Description of the GIF" class="responsive-gif">
+      </div>
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <div class="content has-text-centered">
+            <p>3D Referential Grounding: Taking point cloud and language queries as input, LIFT-GS reconstructs the scene (in Gaussian Splatting) and grounds the nouns in the 3D scene.</p>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <h2 class="title is-3">Reconstruction, Recognition, and Reorganization <a href="https://www.sciencedirect.com/science/article/pii/S0167865516000313" class="external-link">(Three R)</a></h2> 
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <h2 class="title is-3">Pseudo-Labeling</h2>
+    </div>
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-centered">
+          <p>We leverage 2D foundation models to generate pseudo-labels for training 3D VLG models.</p>
+        </div>
+        <div class="content has-text-centered">
+          <img src="static/resource/data_engine.png" alt="Data Engineering" class="responsive-gif">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    
+    <div class="columns is-centered">
+      <h2 class="title is-3">As a Pretraining Pipeline</h2>
+    </div>
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-centered">
+          <p>We leverage 2D foundation models to generate pseudo-labels for training 3D VLG models.</p>
+        </div>
+        <div class="content has-text-centered">
+          <img src="static/resource/pretraining1.png" alt="Pseudo-Labeling" class="responsive-gif">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-widescreen">
+    <div class="columns is-centered">
+      <h2 class="title is-3">Scaling</h2>
+    </div>
+    <br>
+    <div class="columns is-centered">
+
+          <div class="column">
+              <h2 class="title is-4">Finetuning Data Scaling</h2>
+              <div class="columns is-centered">
+                  <div class="column content">
+
+                      <img src="static/resource/ref_exp_data.png" class="interpolation-image" alt=""
+                          style="display: block; margin-left: auto; margin-right: auto" width="100%">
+                      <br>
+                      <br>
+                      <img src="static/resource/pretraining_data_1.png" class="interpolation-image" alt=""
+                          style="display: block; margin-left: auto; margin-right: auto" width="100%">
+                      <span style="font-size: 110%">
+                        Finetuning data scaling.
+                      </span>
+                  </div>
+
+              </div>
+          </div>
+          <div class="column">
+              <h2 class="title is-4">Pretraining Data Scaling</h2>
+              <div class="columns is-centered">
+                  <div class="column content">
+
+                      <img src="static/resource/pretraining_data_2.png" class="interpolation-image" alt=""
+                          style="display: block; margin-left: auto; margin-right: auto" width="100%">
+                      <span style="font-size: 110%">
+                        Pretraining data scaling.
+                      </span>
+                  </div>
+
+              </div>
+              <h2 class="title is-4">2D Model Scaling</h2>
+              <div class="columns is-centered">
+                  <div class="column content">
+
+                      <img src="static/resource/pretraining_3.png" class="interpolation-image" alt=""
+                          style="display: block; margin-left: auto; margin-right: auto" width="100%">
+                      <span style="font-size: 110%">
+                        Pretraining data scaling.
+                      </span>
+                  </div>
+
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+
+<!-- <section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <h2 class="title is-3">Data Scaling</h2>
+    </div>
+
+    <div class="column">
+      <h2 class="title is-5">Automated Evaluation Workflow</h2>
+      <div class="columns is-centered">
+          <div class="column content">
+
+              <img src="assets/images/workflow.png" class="interpolation-image" alt=""
+                  style="display: block; margin-left: auto; margin-right: auto" width="100%">
+              <span style="font-size: 110%">
+                  <span style="font-weight: bold">
+                      <br />
+                      <br />
+                      Illustration of LLM-Match evaluation and workflow. </span>
+                  While the open-vocabulary nature makes EQA realistic, it poses a challenge for
+                  evaluation
+                  due to multiplicity of correct answers. One approach to evaluation is human trials, but
+                  it
+                  can be prohibitively slow and expensive, especially for benchmarks. As an alternative,
+                  we
+                  use an LLM to evaluate the correctness of open-vocabulary answers produced by EQA
+                  agents.
+              </span>
+          </div>
+
+      </div>
+  </div>
+  <div class="column">
+      <h2 class="title is-5">Performance by Category</h2>
+      <div class="columns is-centered">
+          <div class="column content">
+
+              <img src="assets/images/spider-plot.svg" class="interpolation-image" alt=""
+                  style="display: block; margin-left: auto; margin-right: auto" width="75%">
+              <span style="font-size: 110%">
+                  <span style="font-weight: bold">
+                      <br />
+                      Category-level performance on EM-EQA. </span>
+                  We find that agents with access to visual information excel at localizing and
+                  recognizing objects and attributes, and make better use of this information to answer
+                  questions that require world knowledge. However, on other categories performance is
+                  closer to the blind LLM baseline (GPT-4), indicating
+                  substantial room for improvement on OpenEQA.
+              </span>
+          </div>
+
+      </div>
+  </div>
+  </div>
+</section> -->
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{park2021nerfies,
+  author    = {Park, Keunhong and Sinha, Utkarsh and Barron, Jonathan T. and Bouaziz, Sofien and Goldman, Dan B and Seitz, Steven M. and Martin-Brualla, Ricardo},
+  title     = {Nerfies: Deformable Neural Radiance Fields},
+  journal   = {ICCV},
+  year      = {2021},
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/videos/nerfies_paper.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            We borrow the source code of <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> to build this website.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

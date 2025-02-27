@@ -87,10 +87,10 @@
               <a href="https://ayushjain1144.github.io/">Ayush Jain</a><sup>2,3</sup>,
             </span>
             <span class="author-block">
-              <a href="https://yvsriram.github.io/">Sriram Yenamandra</a><sup>2</sup>,
+              <a href="https://yvsriram.github.io/">Sriram Yenamandra</a><sup>2, 4</sup>,
             </span>
             <span class="author-block">
-              <a href="https://www.linkedin.com/in/ada-martin-cmu/">Ada Martin</a><sup>1,2</sup>,
+              <a href="https://www.linkedin.com/in/ada-martin-cmu/">Ada Martin</a><sup>2</sup>,
             </span>
             <span class="author-block">
               <a href="https://www.linkedin.com/in/vincentpierreberges/">Vincent-Pierre Berges</a><sup>2</sup>
@@ -122,6 +122,7 @@
             <span class="author-block"><sup>1</sup>University of Michigan,</span>
             <span class="author-block"><sup>2</sup>Fundamental AI Research (FAIR), Meta</span>
             <span class="author-block"><sup>3</sup>Carnegie Mellon University</span>
+            <span class="author-block"><sup>4</sup>Stanford University</span>
           </div>
 
           <div class="column has-text-centered">
@@ -175,10 +176,10 @@
       <div class="column is-four-fifths">
         <h2 class="title is-3">Overview</h2>
         <div class="content has-text-justified">
-          <p style="background-color: #c2d1ee; color: rgb(0, 0, 0); padding: 10px;">
+          <p style="background-color: #c2d1ee; color: rgb(0, 0, 0); padding: 10px; font-size: 120%">
             <strong>TL;DR</strong>: We train 3D vision-language grounding (3D VLG) models that is supervised only in 2D, using 2D losses and differentiable rendering.
           </p>
-          <p>
+          <p style="font-size: 120%">
             Our approach to training 3D vision-language understanding models is to train a feedforward model that makes predictions in 3D, but never requires 3D labels and is supervised only in 2D, using 2D losses and differentiable rendering.
             The approach is new for vision-language understanding. By treating the reconstruction as a ``latent variable'', we can render the outputs without placing unnecessary constraints on the network architecture (e.g. can be used with decoder-only models).
             For training, only need images and camera pose, and 2D labels. We show that we can even remove the need for 2D labels by using pseudo-labels from pretrained 2D models. We demonstrate this to pretrain a network, and we finetune it for 3D vision-language understanding tasks. We show this approach outperforms baselines/sota for 3D vision-language grounding, and also outperforms other 3D pretraining techniques.
@@ -199,7 +200,7 @@
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
           <div class="content has-text-centered">
-            <p>3D Referential Grounding: Taking point cloud and language queries as input, LIFT-GS reconstructs the scene (in Gaussian Splatting) and grounds the nouns in the 3D scene.</p>
+            <p style="font-size: 120%">3D Referential Grounding: Taking point cloud and language queries as input, LIFT-GS reconstructs the scene (in Gaussian Splatting) and grounds the nouns in the 3D scene.</p>
           </div>
         </div>
       </div>
@@ -216,14 +217,16 @@
     <div class="columns is-centered">
       <div class="column is-four-fifths">
         <div class="content has-text-centered">
-          <p>Trained with 2D losses, our model can do 3D reconstruction, recognition, which consequently leads to 3D reorganization.</p>
+          <p style="font-size: 120%">Our model can do 3D <strong>reconstruction</strong>, open-vocabulary <strong>recognition</strong>, which consequently leads to 3D <strong>reorganization</strong>, <strong>without any 3D supervision</strong>.
+            We show the reconstructed 3D scenes from the sparse point cloud input, and the open-vocabulary segmentation results given language queries.
+          </p>
         </div>
         <div class="columns is-vcentered">
           <div class="column is-flex is-align-items-stretch">
             <img src="static/resource/scene_1_crop.png" alt="scene_1" style="object-fit: cover; height: 70%; width: 80%;">
           </div>
           <div class="column is-flex is-align-items-stretch">
-            <video controls class="responsive-gif" style="height: 100%; object-fit: cover; width: 120%;">
+            <video autoplay loop muted playsinline controls style="height: 100%; object-fit: cover; width: 120%;">
               <source src="static/resource/scene_1_demo2.mp4" type="video/mp4">
             </video>
           </div>
@@ -233,7 +236,7 @@
             <img src="static/resource/scene_2.png" alt="scene_2" style="object-fit: cover; height: 70%; width: 80%;">
           </div>
           <div class="column is-flex is-align-items-stretch">
-            <video controls class="responsive-gif" style="height: 100%; object-fit: cover; width: 120%;">
+            <video autoplay loop muted playsinline controls style="height: 100%; object-fit: cover; width: 120%;">
               <source src="static/resource/scene_2_demo.mp4" type="video/mp4">
             </video>
           </div>
@@ -247,12 +250,14 @@
 <section class="section">
   <div class="container is-max-widescreenp">
     <div class="columns is-centered">
-      <h2 class="title is-3">Pseudo-Labeling</h2>
+      <h2 class="title is-3">Learning from 2D Foundation Models</h2>
     </div>
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <div class="content has-text-centered">
-          <p>We leverage 2D foundation models to generate pseudo-labels for training 3D VLG models.</p>
+          <p style="font-size: 120%">We leverage 2D foundation models to generate pseudo-labels to train our 3D VLG models, and render the outputs to 2D via gaussian splatting for supervision. 
+            In principle, this pipeline is task-agnostic and architecture-agnostic, and can be used to train any 3D models as long as the outputs are renderable to 2D.
+          </p>
         </div>
         <div class="content has-text-centered">
           <img src="static/resource/data_engine.png" alt="Data Engineering" class="responsive-gif">
@@ -272,7 +277,7 @@
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <div class="content has-text-centered">
-          <p>Finetuning with limited 3D data, our model can significantly outperform the baseline trained with 3D data from scratch.</p>
+          <p style="font-size: 120%">Finetuning with limited 3D data, our model can significantly outperform the baseline trained with 3D data from scratch.</p>
         </div>
         <div class="content has-text-centered">
           <img src="static/resource/pretraining1.png" alt="Pseudo-Labeling" class="responsive-gif">
@@ -301,8 +306,11 @@
                       <br>
                       <img src="static/resource/pretraining_data_1.png" class="interpolation-image" alt=""
                           style="display: block; margin-left: auto; margin-right: auto" width="100%">
-                      <span style="font-size: 110%">
-                        We find that <b>pretraining effectively multiplies the fine-tuning dataset</b>
+                      <span style="font-size: 120%">
+                        We finetune the pretrained model with different amounts of 3D data, 
+                        and find that <b>pretraining effectively multiplies the fine-tuning dataset.
+                        </b>
+                        This phenomenon is aligned with the observation from <a href="https://arxiv.org/pdf/2102.01293" class="external-link"> Scaling laws for transfer.</a>.
                       </span>
                   </div>
 
@@ -315,8 +323,8 @@
 
                       <img src="static/resource/pretraining_data_2.png" class="interpolation-image" alt=""
                           style="display: block; margin-left: auto; margin-right: auto" width="100%">
-                      <span style="font-size: 110%">
-                        Pretraining data scaling.
+                      <span style="font-size: 120%">
+                        Adding more data to pretraining consistently improves the performance of finetuning.
                       </span>
                   </div>
 
@@ -327,8 +335,8 @@
 
                       <img src="static/resource/pretraining_3.png" class="interpolation-image" alt=""
                           style="display: block; margin-left: auto; margin-right: auto" width="100%">
-                      <span style="font-size: 110%">
-                        Pretraining data scaling.
+                      <span style="font-size: 120%">
+                        Our pipeline allows a flexible usage of 2D foudnation models, and shows performance gains with larger 2D foundation models and better pseud-labeling designs. 
                       </span>
                   </div>
 
@@ -397,11 +405,10 @@
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
-    <pre><code>@article{park2021nerfies,
-  author    = {Park, Keunhong and Sinha, Utkarsh and Barron, Jonathan T. and Bouaziz, Sofien and Goldman, Dan B and Seitz, Steven M. and Martin-Brualla, Ricardo},
-  title     = {Nerfies: Deformable Neural Radiance Fields},
-  journal   = {ICCV},
-  year      = {2021},
+    <pre><code>@article{liftgs2025,
+  author    = {Cao, Ang and Arnaud, Sergio and Maksymets, Oleksandr and Yang, Jianing and Jain, Ayush and Yenamandra, Sriram and Martin, Ada and Berges, Vincent-Pierre and McVay, Paul and Partsey, Ruslan and Rajeswaran, Aravind and Meier, Franziska and Johnson, Justin and Park, Jeong Joon and Sax, Alexander},
+  title     = {LIFT-GS: Cross-Scene Render-Supervised Distillation for 3D Language Grounding},
+  year      = {2025},
 }</code></pre>
   </div>
 </section>

@@ -111,7 +111,7 @@
               <a href="https://web.eecs.umich.edu/~justincj/">Justin Johnson</a><sup>2</sup>
             </span>
             <span class="author-block">
-              <a href="https://jeongjoonpark.github.io/">Jeong Joon Park</a><sup>2</sup>
+              <a href="https://jeongjoonpark.github.io/">Jeong Joon Park</a><sup>1</sup>
             </span>
             <span class="author-block">
               <a href="https://alexsax.github.io/">Alexander Sax</a><sup>2</sup>
@@ -177,7 +177,8 @@
         <h2 class="title is-3">Overview</h2>
         <div class="content has-text-justified">
           <p style="background-color: #c2d1ee; color: rgb(0, 0, 0); padding: 10px; font-size: 120%">
-            <strong>TL;DR</strong>: LIFT-GS trains 3D vision-language grounding (3D VLG) models using only 2D supervision through pixel-based losses and differentiable rendering.
+            <strong>TL;DR</strong>: LIFT-GS trains a 3D vision-language grounding (3D VLG) model using only 2D supervision; through pixel-based losses and differentiable rendering.
+            <!-- <strong>TL;DR</strong>: LIFT-GS trains a single model for all three R's of computer vision: 3D <strong>reconstruction</strong>, open-vocabulary <strong>recognition</strong>, and 3D segmentation (<strong>reorganization</strong>)—by using only differentiable rendering and <strong>without any 3D supervision</strong>. -->
           </p>
           <p style="font-size: 120%">
 
@@ -202,7 +203,7 @@
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
           <div class="content has-text-centered">
-            <p style="font-size: 120%">3D Referential Grounding with LIFT-GS: Taking point cloud and language queries as input, LIFT-GS reconstructs the scene (in Gaussian Splatting) and grounds the nouns in the 3D scene.</p>
+            <p style="font-size: 120%"><strong>3D Referential Grounding with LIFT-GS:</strong> Using language queries and sparse point clouds as input, LIFT-GS densely reconstructs the scene (in Gaussian Splatting) and grounds the nouns in the 3D scene.</p>
           </div>
         </div>
       </div>
@@ -212,14 +213,14 @@
   </div>
 </section>
 <section class="section">
-  <div class="container is-max-widescreen">
+  <div class="container is-max-widescreenp">
     <div class="columns is-centered">
       <h2 class="title is-3">Reconstruction, Recognition, and Reorganization <a href="https://www.sciencedirect.com/science/article/pii/S0167865516000313" class="external-link">(Three R)</a></h2> 
-  </div>
+    </div>
     <div class="columns is-centered">
       <div class="column is-four-fifths">
         <div class="content has-text-centered">
-          <p style="font-size: 120%">LIFT-GS demonstrates that the same approach can be extended beyond reconstruction to train models for all three R's of computer vision: 3D <strong>reconstruction</strong>, open-vocabulary <strong>recognition</strong>, and 3D segmentation (<strong>reorganization</strong>)—all <strong>without any 3D supervision</strong>.
+          <p style="font-size: 120%">Differentiable rendering can be used with many types of frame-based losses. LIFT-GS demonstrates that it can be used to train a single model for all three R's of computer vision: 3D <strong>reconstruction</strong>, open-vocabulary <strong>recognition</strong>, and 3D segmentation (<strong>reorganization</strong>)—all <strong>without any 3D supervision</strong>.
           </p>
         </div>
         <div class="columns is-vcentered">
@@ -242,9 +243,16 @@
             </video>
           </div>
         </div>
-        </div>
+        <p style="font-size: 120%">
+          Recent works show that even high-resolution image-to-Gaussian models can be trained/finetuned directly from images 
+          (<a href="https://research.nvidia.com/labs/toronto-ai/l4gm/">L4GM</a>, <a href="https://tobias-kirschstein.github.io/avat3r/">AVAT3R</a>).
+          LIFT-GS demonstrates that differentiable rendering can be used to train models not just for reconstruction, 
+          but also models that predict and ground 3D instance masks using open-vocabulary referring expressions. 
+        </p>
       </div>
+    
     </div>
+  </div>
 </section>
 
 
@@ -256,8 +264,11 @@
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <div class="content has-text-centered">
-          <p style="font-size: 120%">LIFT-GS leverages 2D foundation-scale models to generate pseudo-labels, which are used for distillation into a 3D VLG model. The the outputs are rendered via Gaussian Splatting to 2D for pixel-based supervision. 
-          In principle, the render-supervised distillation approach is task-agnostic and architecture-agnostic, and can be used to train any 3D models as long as the outputs are renderable to 2D.
+          <p style="font-size: 120%">Since 3D mask data is scarce, LIFT-GS leverages 2D foundation-scale models to generate pseudolabels directly on the observed frames.
+            It's these 2D pseudolabels that are used to supervise the 3D model.
+            During training, the model outputs are rendered to features and 2D masks via Gaussian Splatting, and the pseudolabels are used for frame-based supervision. 
+            The <strong>render-supervised distillation</strong> approach is largely agnostic to both architecture and task;
+             in that it can be used to train any 3D models as long as the outputs are renderable to 2D.
           </p>
         </div>
         <div class="content has-text-centered">
@@ -269,7 +280,7 @@
 </section>
 
 <section class="section">
-  <div class="container is-max-widescreen">
+  <div class="container is-max-widescreenp">
 
     
     <div class="columns is-centered">
@@ -279,7 +290,7 @@
       <div class="column is-four-fifths">
         <div class="content has-text-centered">
           <p style="font-size: 120%"> 
-            Finetuning the distilled model on the existing 3D labels, the distillation pretraining significantly outperforms the model trained from scratch and the SotA baseline. In the figure below, the distillation is done only on the same training scenes used for finetuning. </p>
+            Finetuning the distilled weights on existing 3D labels, LIFT-GS can significantly outperform both its non-distilled counterpart and also SotA baselines. In the figure below, all pretraining and finetuning is done on the same scenes. </p>
         </div>
         <div class="content has-text-centered">
           <img src="static/resource/pretraining1.png" alt="Pseudo-Labeling" class="responsive-gif">
@@ -294,56 +305,77 @@
     <div class="columns is-centered">
       <h2 class="title is-3">Scaling</h2>
     </div>
+    <div class="content has-text-centered">
+      <p style="font-size: 120%"> 
+        LIFT-GS exhibits robust scaling properties.
+        Our experiments demonstrate a clear "dataset multiplier" effect, where pretraining effectively amplifies the value of finetuning data; consistent with established <a href="https://arxiv.org/pdf/2102.01293" class="external-link"> scaling laws for transfer</a> learning.
+        <br>
+      </p>
+    </div>
     <br>
+    
+    <!-- First Row: Finetuning Data Scaling -->
     <div class="columns is-centered">
-
-          <div class="column">
-              <h2 class="title is-4">Finetuning Data Scaling</h2>
-              <div class="columns is-centered">
-                  <div class="column content">
-
-                      <img src="static/resource/ref_exp_data.png" class="interpolation-image" alt=""
-                          style="display: block; margin-left: auto; margin-right: auto" width="100%">
-                      <br>
-                      <br>
-                      <img src="static/resource/pretraining_data_1.png" class="interpolation-image" alt=""
-                          style="display: block; margin-left: auto; margin-right: auto" width="100%">
-                      <span style="font-size: 120%">
-                        We finetune the pretrained model with different amounts of 3D data, 
-                        and find that <b>pretraining effectively multiplies the fine-tuning dataset.
-                        </b>
-                        This phenomenon is aligned with the observation from <a href="https://arxiv.org/pdf/2102.01293" class="external-link"> Scaling laws for transfer.</a>.
-                      </span>
-                  </div>
-
-              </div>
+      <div class="column" style="border-left: 1px solid #ddd; border-right: 1px solid #ddd; padding: 20px;">
+        <h2 class="title is-4">Finetuning Data Scaling</h2>
+        <p style="font-size: 120%">        Importantly, these gains do not diminish as finetuning data increases to 100%, which indicates that 3D VLG models are <b>currently operating in the severely data-constrained regime</b>.
+        </p>
+        <div class="columns is-centered">
+          <div class="column content" style="max-width: 50%; margin: 0 auto;">
+            <br>
+            <img src="static/resource/ref_exp_data.png" class="interpolation-image" alt=""
+                style="display: block; margin-left: auto; margin-right: auto" width="100%">
+            <br><br>
+            <img src="static/resource/pretraining_data_1.png" class="interpolation-image" alt=""
+                style="display: block; margin-left: auto; margin-right: auto" width="100%">
+            <span style="font-size: 120%; margin-top: 20px; display: block;">
+              We finetune the pretrained model with different amounts of 3D data, 
+              and find that <b>pretraining effectively multiplies the fine-tuning dataset.
+              </b>
+              This "dataset multiplier" phenomenon is consistent with established <a href="https://arxiv.org/pdf/2102.01293" class="external-link"> scaling laws for transfer</a>.
+            </span>
           </div>
-          <div class="column">
-              <h2 class="title is-4">Pretraining Data Scaling</h2>
-              <div class="columns is-centered">
-                  <div class="column content">
-                      <img src="static/resource/pretraining_data_2.png" class="interpolation-image" alt=""
-                          style="display: block; margin-left: auto; margin-right: auto" width="100%">
-                      <span style="font-size: 120%">
-                        Adding more data to pretraining consistently improves the performance of finetuning.
-                      </span>
-                  </div>
-
-              </div>
-              <h2 class="title is-4">2D Model Scaling</h2>
-              <div class="columns is-centered">
-                  <div class="column content">
-
-                      <img src="static/resource/pretraining_3.png" class="interpolation-image" alt=""
-                          style="display: block; margin-left: auto; margin-right: auto" width="100%">
-                      <span style="font-size: 120%">
-                        Our pipeline allows a flexible usage of 2D foudnation models, and shows performance gains with larger 2D foundation models and better pseudo-labeling designs. 
-                      </span>
-                  </div>
-
-              </div>
-          </div>
+        </div>
       </div>
+    </div>
+
+    <!-- Second Row: Pretraining Data Scaling -->
+    <div class="columns is-centered">
+      <div class="column" style="border-left: 1px solid #ddd; border-right: 1px solid #ddd; padding: 20px;">
+        <h2 class="title is-4">Pretraining Data Scaling</h2>
+        <p style="font-size: 120%">
+          This suggests that using render-supervision along with foundation-scale image/video data offers a promising approach to scaling 3D vision-language models.
+        </p>
+        <div class="columns is-centered">
+          <div class="column content" style="max-width: 50%; margin: 0 auto;">
+            <img src="static/resource/pretraining_data_2.png" class="interpolation-image" alt=""
+                style="display: block; margin-left: auto; margin-right: auto" width="100%">
+            <span style="font-size: 120%; display: block; margin-top: 20px;">
+              Adding more data to pretraining consistently improves the performance of finetuning.
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Third Row: Improved Pseudo-Labeling -->
+    <div class="columns is-centered">
+      <div class="column" style="border-left: 1px solid #ddd; border-right: 1px solid #ddd; padding: 20px;">
+        <h2 class="title is-4">Improved Pseudo-Labeling</h2>
+        <p style="font-size: 120%">
+          And our pipeline allows a flexible usage of 2D foundation models and pseudo-labeling strategies.  
+        </p>
+        <div class="columns is-centered">
+          <div class="column content" style="max-width: 50%; margin: 0 auto;">
+            <img src="static/resource/pretraining_3.png" class="interpolation-image" alt=""
+                style="display: block; margin-left: auto; margin-right: auto" width="100%">
+            <span style="font-size: 120%; display: block; margin-top: 20px;">
+              LIFT-GS shows performance gains with larger 2D foundation models and better pseudo-labeling designs. 
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 

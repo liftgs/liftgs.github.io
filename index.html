@@ -70,8 +70,8 @@
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">LIFT-GS:</h1>
-          <h1 class="title is-1 publication-title">Cross-Scene Render-Supervised Distillation for 3D Language Grounding</h1>
+          <h1 class="title is-1 publication-title">From Thousands to Billions:</h1>
+          <h1 class="title is-1 publication-title">3D Visual Language Grounding via Render-Supervised Distillation from 2D VLMs</h1>
           <div class="is-size-5 publication-authors">
             <span class="author-block">
               <a href="https://caoang327.github.io/">Ang Cao</a><sup>1, 2</sup>,</span>
@@ -177,16 +177,11 @@
         <h2 class="title is-3">Overview</h2>
         <div class="content has-text-justified">
           <p style="background-color: #c2d1ee; color: rgb(0, 0, 0); padding: 10px; font-size: 120%">
-            <strong>TL;DR</strong>: LIFT-GS trains a 3D vision-language grounding (3D VLG) model using only 2D supervision; through pixel-based losses and differentiable rendering.
+            <strong>TL;DR</strong>: LIFT-GS trains a 3D vision-language grounding (3D VLG) model using only 2D rendering supervision: enlarging the training data of 3D VLG from thousands of scenes to billions of images-text pairs.
             <!-- <strong>TL;DR</strong>: LIFT-GS trains a single model for all three R's of computer vision: 3D <strong>reconstruction</strong>, open-vocabulary <strong>recognition</strong>, and 3D segmentation (<strong>reorganization</strong>)—by using only differentiable rendering and <strong>without any 3D supervision</strong>. -->
           </p>
           <p style="font-size: 120%">
-
-            LIFT-GS is an approach to training 3D vision-language understanding and grounding models, that is supervised only using pixel-based losses and differentiable rendering. This makes it possible to train 3D models without 3D labels, and without placing constraints on the network architecture (e.g. can be used with decoder-only transformer models).
-                        
-            During training, LIFT-GS requires only images, 2D labels, and pointmaps (e.g. from depth and camera pose).
-            
-            We can even remove the need for 2D labels; instead using 2D pseudo-labels from pretrained models. LIFT-GS demonstrates this, using 2D pseudo-labels to pretrain a model for 3D vision-language understanding tasks. Finetuning LIFT-GS for 3D vision-language grounding outperforms existing SotA models, and also outperforms other 3D pretraining techniques.      
+            3D vision-language grounding faces a fundamental data bottleneck: while 2D models train on billions of images, 3D models have access to only thousands of labeled scenes--a six-order-of-magnitude gap that severely limits performance. We introduce <strong>LIFT-GS</strong>, a practical distillation technique that overcomes this limitation by using differentiable rendering to bridge 3D and 2D supervision. <strong>LIFT-GS</strong> predicts 3D Gaussian representations from point clouds and uses them to render predicted language-conditioned 3D masks into 2D views, enabling supervision from 2D foundation models (SAM, CLIP, LLaMA) without requiring any 3D annotations. This render-supervised formulation enables end-to-end training of complete encoder-decoder architectures and is inherently model-agnostic.  LIFT-GS achieves state-of-the-art results with 25.7\% mAP on open-vocabulary instance segmentation (vs. 20.2\% prior SOTA) and consistent 10-30\% improvements on referential grounding tasks. Remarkably, pretraining effectively multiplies fine-tuning datasets by 2X, demonstrating strong scaling properties that suggest 3D VLG currently operates in a severely data-scarce regime. Project page: <a href="https://liftgs.github.io">https://liftgs.github.io</a>
           </p>
         </div>
       </div>
